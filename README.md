@@ -1,1 +1,1 @@
-# react-rsschool
+# react2026Q2
