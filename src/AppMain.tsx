@@ -3,14 +3,23 @@ import './AppMain.css';
 import Results from './Results';
 import TestError from './TestError';
 
-type AppMainProps = Record<string, never>;
+type ResultItem = {
+  name: string;
+  description: string;
+};
+
+type AppMainProps = {
+  items: ResultItem[];
+};
 
 class AppMain extends Component<AppMainProps> {
   render() {
+    const { items } = this.props;
+
     return (
       <main className="app__main">
         <TestError />
-        <Results />
+        <Results items={items} />
       </main>
     );
   }

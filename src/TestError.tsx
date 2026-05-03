@@ -8,7 +8,7 @@ class TestError extends Component<TestErrorProps> {
   render() {
     return (
       <div className="test-error">
-        <Button />
+        <Button label='Test Error' />
       </div>
     );
   }

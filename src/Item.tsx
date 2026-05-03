@@ -1,14 +1,19 @@
 import { Component } from 'react';
 import './Item.css';
 
-type ItemProps = Record<string, never>;
+type ItemProps = {
+  name: string;
+  description: string;
+};
 
 class Item extends Component<ItemProps> {
   render() {
+    const { name, description } = this.props;
+
     return (
       <li className="item">
-        <h3>ivysaur</h3>
-        <p>Pokemon description</p>
+        <h3>{name}</h3>
+        <p>{description}</p>
       </li>
     );
   }
