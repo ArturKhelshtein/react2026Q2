@@ -13,19 +13,25 @@ type AppProps = Record<string, never>;
 type AppState = {
   query: string;
   items: AppItem[];
+  loading: boolean;
+  error: string | null;
+  submittedQuery: string;
 };
 
-const initialItems: AppItem[] = [
-  { name: 'bulbasaur', description: 'Pokemon description' },
-  { name: 'ivysaur', description: 'Pokemon description' },
-  { name: 'charmander', description: 'Pokemon description' },
-];
+const API_URL = 'https://pokeapi.co/api/v2';
 
 class App extends Component<AppProps, AppState> {
   state: AppState = {
     query: '',
-    items: initialItems,
+    items: [],
+    loading: false,
+    error: null,
+    submittedQuery: '',
   };
+
+  componentDidMount() {
+    void this.loadPokemons('');
+  }
 
   handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     this.setState({ query: event.target.value });
@@ -33,20 +39,62 @@ class App extends Component<AppProps, AppState> {
 
   handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const query = this.state.query.trim().toLowerCase();
-    if (!query) {
-      this.setState({ items: initialItems });
+
+    if (query === this.state.submittedQuery) {
       return;
     }
-    this.setState({
-      items: initialItems.filter((item) =>
-        item.name.toLowerCase().includes(query)
-      ),
-    });
+
+    if (!query) {
+      this.setState({ submittedQuery: '' });
+      void this.loadPokemons('');
+      return;
+    }
+
+    this.setState({ submittedQuery: query });
+    void this.loadPokemons(query);
+  };
+
+  loadPokemons = async (query: string) => {
+    this.setState({ loading: true, error: null });
+
+    try {
+      const url = query
+        ? `${API_URL}/pokemon/${query.toLowerCase()}`
+        : `${API_URL}/pokemon?limit=20&offset=0`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error('Failed to load data');
+      }
+
+      const data = await response.json();
+      this.setState({
+        items: query
+          ? [
+              {
+                name: data.name,
+                description: 'Description later',
+              },
+            ]
+          : data.results.map((item: { name: string; url: string }) => ({
+              name: item.name,
+              description: 'Description later',
+            })),
+      });
+    } catch (error) {
+      this.setState({
+        error: error instanceof Error ? error.message : 'Unknown error',
+        items: [],
+      });
+    } finally {
+      this.setState({ loading: false });
+    }
   };
 
   render() {
-    const { query, items } = this.state
+    const { query, items } = this.state;
 
     return (
       <div className="app">
