@@ -13,7 +13,7 @@ class Search extends Component<SearchProps> {
     const { value, onChange, onSubmit } = this.props;
 
     return (
-      <form className="search">
+      <form className="search" onSubmit={onSubmit}>
         <input
           className="search__input"
           type="text"
@@ -21,7 +21,7 @@ class Search extends Component<SearchProps> {
           onChange={onChange}
           placeholder="Search pokemon by name"
         />
-        <Button label="Search" type="submit"/>
+        <Button label="Search" type="submit" />
       </form>
     );
   }

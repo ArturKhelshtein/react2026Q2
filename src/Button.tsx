@@ -9,10 +9,10 @@ type ButtonProps = {
 
 class Button extends Component<ButtonProps> {
   render() {
-    const { label, onClick } = this.props;
+    const { label, type, onClick } = this.props;
 
     return (
-      <button className="button" type="button" onClick={onClick}>
+      <button className="button" type={type} onClick={onClick}>
         {label}
       </button>
     );
