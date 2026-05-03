@@ -2,6 +2,8 @@ import { Component, type ChangeEvent, type FormEvent } from 'react';
 import './App.css';
 import AppHeader from './AppHeader';
 import AppMain from './AppMain';
+import TestError from './TestError';
+import ThrowError from './ThrowError';
 
 type AppItem = {
   name: string;
@@ -16,6 +18,7 @@ type AppState = {
   loading: boolean;
   error: string | null;
   submittedQuery: string;
+  showError: boolean;
 };
 
 const STORAGE_KEY = 'pokemonSearch';
@@ -28,6 +31,7 @@ class App extends Component<AppProps, AppState> {
     loading: false,
     error: null,
     submittedQuery: '',
+    showError: false,
   };
 
   componentDidMount() {
@@ -60,13 +64,13 @@ class App extends Component<AppProps, AppState> {
     if (!query) {
       this.setState({ submittedQuery: '' });
       void this.loadPokemons('');
-      localStorage.setItem(STORAGE_KEY, '')
+      localStorage.setItem(STORAGE_KEY, '');
       return;
     }
 
     this.setState({ submittedQuery: query });
     void this.loadPokemons(query);
-    localStorage.setItem(STORAGE_KEY, query)
+    localStorage.setItem(STORAGE_KEY, query);
   };
 
   loadPokemons = async (query: string) => {
@@ -139,8 +143,12 @@ class App extends Component<AppProps, AppState> {
     }
   };
 
+  handleTestError = async () => {
+    this.setState({ showError: true });
+  };
+
   render() {
-    const { query, items } = this.state;
+    const { query, items, showError } = this.state;
 
     return (
       <div className="app">
@@ -154,6 +162,8 @@ class App extends Component<AppProps, AppState> {
           error={this.state.error}
           loading={this.state.loading}
         />
+        <TestError onClick={this.handleTestError} />
+        {showError && <ThrowError />}
       </div>
     );
   }

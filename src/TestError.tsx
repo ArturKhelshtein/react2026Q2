@@ -1,14 +1,18 @@
-import { Component } from 'react';
+import { Component, type MouseEvent } from 'react';
 import './TestError.css';
 import Button from './Button';
 
-type TestErrorProps = Record<string, never>
+type TestErrorProps = {
+  onClick: (event: MouseEvent<HTMLButtonElement>) => void;
+};
 
 class TestError extends Component<TestErrorProps> {
   render() {
+    const { onClick } = this.props;
+
     return (
       <div className="test-error">
-        <Button label='Test Error' />
+        <Button label="Test Error" onClick={onClick} />
       </div>
     );
   }

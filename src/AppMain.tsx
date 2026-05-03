@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import './AppMain.css';
 import Results from './Results';
-import TestError from './TestError';
 
 type ResultItem = {
   name: string;
@@ -20,7 +19,6 @@ class AppMain extends Component<AppMainProps> {
 
     return (
       <main className="app__main">
-        <TestError />
         {loading && <p>Loading...</p>}
         {!loading && error && <p>{error}</p>}
         {!loading && !error && <Results items={items} />}
