@@ -16,7 +16,7 @@ type AppMainProps = {
 
 class AppMain extends Component<AppMainProps> {
   render() {
-    const { items, loading, error } = this.props
+    const { items, loading, error } = this.props;
 
     return (
       <main className="app__main">

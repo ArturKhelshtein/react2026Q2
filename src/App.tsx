@@ -32,6 +32,7 @@ class App extends Component<AppProps, AppState> {
 
   componentDidMount() {
     const savedQuery = localStorage.getItem(STORAGE_KEY) ?? '';
+
     this.setState(
       {
         query: savedQuery,
@@ -59,11 +60,13 @@ class App extends Component<AppProps, AppState> {
     if (!query) {
       this.setState({ submittedQuery: '' });
       void this.loadPokemons('');
+      localStorage.setItem(STORAGE_KEY, '')
       return;
     }
 
     this.setState({ submittedQuery: query });
     void this.loadPokemons(query);
+    localStorage.setItem(STORAGE_KEY, query)
   };
 
   loadPokemons = async (query: string) => {
