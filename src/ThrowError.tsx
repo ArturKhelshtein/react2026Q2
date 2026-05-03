@@ -1,8 +1,11 @@
 import { Component } from 'react';
 
 class ThrowError extends Component {
-  render() {
+  componentDidMount() {
     throw new Error('Test error');
+  }
+  render() {
+    return null;
   }
 }
 
