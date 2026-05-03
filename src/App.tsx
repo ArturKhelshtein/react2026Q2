@@ -52,6 +52,19 @@ class App extends Component<AppProps, AppState> {
     this.setState({ query: event.target.value });
   };
 
+  _handleErrorStatus = (status: number) => {
+    if (status === 400) {
+        throw new Error('Invalid search request');
+      }
+    if (status === 404) {
+      throw new Error('Pokemon not found');
+    }
+    if (status >= 500) {
+      throw new Error('Server error, please try again later');
+    }
+    throw new Error('Failed to load data');
+  };
+
   handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -81,7 +94,7 @@ class App extends Component<AppProps, AppState> {
         const response = await fetch(`${API_URL}/pokemon/${query}`);
 
         if (!response.ok) {
-          throw new Error('Failed to load data');
+            this._handleErrorStatus(response.status);
         }
 
         const details = (await response.json()) as {
@@ -105,7 +118,7 @@ class App extends Component<AppProps, AppState> {
       const response = await fetch(`${API_URL}/pokemon?limit=20&offset=0`);
 
       if (!response.ok) {
-        throw new Error('Failed to load data');
+        this._handleErrorStatus(response.status);
       }
 
       const list = (await response.json()) as {
@@ -119,7 +132,7 @@ class App extends Component<AppProps, AppState> {
         list.results.map(async (pokemon) => {
           const detailsResponse = await fetch(pokemon.url);
           if (!detailsResponse.ok) {
-            throw new Error('Failed to load data');
+            this._handleErrorStatus(response.status);
           }
           const details = (await detailsResponse.json()) as {
             name: string;
