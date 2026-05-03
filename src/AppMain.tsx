@@ -10,16 +10,20 @@ type ResultItem = {
 
 type AppMainProps = {
   items: ResultItem[];
+  loading: boolean;
+  error: string | null;
 };
 
 class AppMain extends Component<AppMainProps> {
   render() {
-    const { items } = this.props;
+    const { items, loading, error } = this.props
 
     return (
       <main className="app__main">
         <TestError />
-        <Results items={items} />
+        {loading && <p>Loading...</p>}
+        {!loading && error && <p>{error}</p>}
+        {!loading && !error && <Results items={items} />}
       </main>
     );
   }

@@ -18,6 +18,7 @@ type AppState = {
   submittedQuery: string;
 };
 
+const STORAGE_KEY = 'pokemonSearch';
 const API_URL = 'https://pokeapi.co/api/v2';
 
 class App extends Component<AppProps, AppState> {
@@ -30,7 +31,16 @@ class App extends Component<AppProps, AppState> {
   };
 
   componentDidMount() {
-    void this.loadPokemons('');
+    const savedQuery = localStorage.getItem(STORAGE_KEY) ?? '';
+    this.setState(
+      {
+        query: savedQuery,
+        submittedQuery: savedQuery,
+      },
+      () => {
+        void this.loadPokemons(savedQuery);
+      }
+    );
   }
 
   handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -60,29 +70,62 @@ class App extends Component<AppProps, AppState> {
     this.setState({ loading: true, error: null });
 
     try {
-      const url = query
-        ? `${API_URL}/pokemon/${query.toLowerCase()}`
-        : `${API_URL}/pokemon?limit=20&offset=0`;
-      const response = await fetch(url);
+      if (query) {
+        const response = await fetch(`${API_URL}/pokemon/${query}`);
+
+        if (!response.ok) {
+          throw new Error('Failed to load data');
+        }
+
+        const details = (await response.json()) as {
+          name: string;
+          height: number;
+          weight: number;
+        };
+
+        this.setState({
+          items: [
+            {
+              name: details.name,
+              description: `Height: ${details.height}, Weight: ${details.weight}`,
+            },
+          ],
+        });
+
+        return;
+      }
+
+      const response = await fetch(`${API_URL}/pokemon?limit=20&offset=0`);
 
       if (!response.ok) {
         throw new Error('Failed to load data');
       }
 
-      const data = await response.json();
-      this.setState({
-        items: query
-          ? [
-              {
-                name: data.name,
-                description: 'Description later',
-              },
-            ]
-          : data.results.map((item: { name: string; url: string }) => ({
-              name: item.name,
-              description: 'Description later',
-            })),
-      });
+      const list = (await response.json()) as {
+        results: Array<{
+          name: string;
+          url: string;
+        }>;
+      };
+
+      const items = await Promise.all(
+        list.results.map(async (pokemon) => {
+          const detailsResponse = await fetch(pokemon.url);
+          if (!detailsResponse.ok) {
+            throw new Error('Failed to load data');
+          }
+          const details = (await detailsResponse.json()) as {
+            name: string;
+            height: number;
+            weight: number;
+          };
+          return {
+            name: details.name,
+            description: `Height: ${details.height}, Weight: ${details.weight}`,
+          };
+        })
+      );
+      this.setState({ items });
     } catch (error) {
       this.setState({
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -103,7 +146,11 @@ class App extends Component<AppProps, AppState> {
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
         />
-        <AppMain items={items} />
+        <AppMain
+          items={items}
+          error={this.state.error}
+          loading={this.state.loading}
+        />
       </div>
     );
   }
