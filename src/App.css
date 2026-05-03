@@ -9,17 +9,13 @@
     --stroke-mid: 2px;
     --stroke-max: 4px;
 
+    width: 1126px;
+    max-width: 100%;
+    margin: 0 auto;
     min-height: 100vh;
     padding: var(--spaicing-max);
     display: flex;
     flex-direction: column;
     gap: var(--spaicing-mid);
     box-sizing: border-box;
-    background: linear-gradient(
-        180deg,
-        #f8f9ff
-            0%,
-        #eef2ff
-            100%
-    );
 }
