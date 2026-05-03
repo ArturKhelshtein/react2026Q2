@@ -1,0 +1,5 @@
+.test-error {
+    display: flex;
+    align-items: center;
+    padding-bottom: var(--spaicing-min);
+}

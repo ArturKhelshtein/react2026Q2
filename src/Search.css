@@ -1,0 +1,40 @@
+.search {
+    display: flex;
+    gap: var(--spaicing-min);
+    align-items: center;
+}
+
+.search__input {
+    flex: 1;
+    min-width: 0;
+    height: 48px;
+    padding: 0
+        16px;
+    border: 1px
+        solid
+        #cbd5e1;
+    border-radius: var(--radius-mid);
+    font: inherit;
+    outline: none;
+    transition:
+        border-color
+            0.2s
+            ease,
+        box-shadow
+            0.2s
+            ease;
+}
+
+.search__input:focus {
+    border-color: #7c3aed;
+    box-shadow: 0
+        0
+        0
+        4px
+        rgba(
+            124,
+            58,
+            237,
+            0.12
+        );
+}

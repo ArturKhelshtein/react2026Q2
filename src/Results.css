@@ -1,0 +1,26 @@
+
+.results {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spaicing-mid)
+}
+
+.results__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spaicing-min)
+}
+
+.results__title {
+    margin: 0;
+    font-size: 20px;
+}
+
+.results__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+}
