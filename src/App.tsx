@@ -132,7 +132,7 @@ class App extends Component<AppProps, AppState> {
         list.results.map(async (pokemon) => {
           const detailsResponse = await fetch(pokemon.url);
           if (!detailsResponse.ok) {
-            this._handleErrorStatus(response.status);
+            this._handleErrorStatus(detailsResponse.status);
           }
           const details = (await detailsResponse.json()) as {
             name: string;
