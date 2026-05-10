@@ -1,8 +1,8 @@
 import { Component, type ChangeEvent, type FormEvent } from 'react';
 import './App.css';
-import AppHeader from './AppHeader';
-import AppMain from './AppMain';
-import TestError from './TestError';
+import AppHeader from './components/AppHeader';
+import AppMain from './components/AppMain';
+import TestError from './components/TestError';
 import ThrowError from './ThrowError';
 
 interface AppItem {

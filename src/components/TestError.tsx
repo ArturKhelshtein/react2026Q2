@@ -2,7 +2,7 @@ import { Component, type MouseEvent } from 'react';
 import './TestError.css';
 import Button from './Button';
 
-type TestErrorProps = {
+interface TestErrorProps {
   onClick: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 

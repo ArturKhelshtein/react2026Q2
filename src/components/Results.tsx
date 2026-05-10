@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import './Results.css';
-import Item from './Item';
+import Item from '../Item';
 
 interface ResultItem {
   name: string;
