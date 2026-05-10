@@ -1,7 +1,7 @@
 import { Component, type MouseEventHandler } from 'react';
 import './Button.css';
 
-type ButtonProps = {
+interface ButtonProps {
   label: string;
   type?: 'button' | 'submit';
   onClick?: MouseEventHandler<HTMLButtonElement>;

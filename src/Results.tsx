@@ -2,12 +2,12 @@ import { Component } from 'react';
 import './Results.css';
 import Item from './Item';
 
-type ResultItem = {
+interface ResultItem {
   name: string;
   description: string;
 };
 
-type ResultsProps = {
+interface ResultsProps {
   items: ResultItem[];
 };
 

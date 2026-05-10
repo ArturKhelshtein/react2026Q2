@@ -2,12 +2,12 @@ import { Component } from 'react';
 import './AppMain.css';
 import Results from './Results';
 
-type ResultItem = {
+interface ResultItem {
   name: string;
   description: string;
 };
 
-type AppMainProps = {
+interface AppMainProps {
   items: ResultItem[];
   loading: boolean;
   error: string | null;

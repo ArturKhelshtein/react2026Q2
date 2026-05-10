@@ -5,14 +5,14 @@ import AppMain from './AppMain';
 import TestError from './TestError';
 import ThrowError from './ThrowError';
 
-type AppItem = {
+interface AppItem {
   name: string;
   description: string;
 };
 
 type AppProps = Record<string, never>;
 
-type AppState = {
+interface AppState {
   query: string;
   items: AppItem[];
   loading: boolean;
@@ -23,29 +23,20 @@ type AppState = {
 
 const STORAGE_KEY = 'pokemonSearch';
 const API_URL = 'https://pokeapi.co/api/v2';
+const savedQuery = localStorage.getItem(STORAGE_KEY) ?? '';
 
 class App extends Component<AppProps, AppState> {
   state: AppState = {
-    query: '',
+      query: savedQuery,
     items: [],
     loading: false,
     error: null,
-    submittedQuery: '',
+    submittedQuery: savedQuery,
     showError: false,
   };
 
   componentDidMount() {
-    const savedQuery = localStorage.getItem(STORAGE_KEY) ?? '';
-
-    this.setState(
-      {
-        query: savedQuery,
-        submittedQuery: savedQuery,
-      },
-      () => {
-        void this.loadPokemons(savedQuery);
-      }
-    );
+    void this.loadPokemons(savedQuery);
   }
 
   handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -54,8 +45,8 @@ class App extends Component<AppProps, AppState> {
 
   _handleErrorStatus = (status: number) => {
     if (status === 400) {
-        throw new Error('Invalid search request');
-      }
+      throw new Error('Invalid search request');
+    }
     if (status === 404) {
       throw new Error('Pokemon not found');
     }
@@ -94,7 +85,7 @@ class App extends Component<AppProps, AppState> {
         const response = await fetch(`${API_URL}/pokemon/${query}`);
 
         if (!response.ok) {
-            this._handleErrorStatus(response.status);
+          this._handleErrorStatus(response.status);
         }
 
         const details = (await response.json()) as {
@@ -107,7 +98,7 @@ class App extends Component<AppProps, AppState> {
           items: [
             {
               name: details.name,
-              description: `Height: ${details.height}, Weight: ${details.weight}`,
+              description: `Height: ${String(details.height)}, Weight: ${String(details.weight)}`,
             },
           ],
         });
@@ -122,10 +113,10 @@ class App extends Component<AppProps, AppState> {
       }
 
       const list = (await response.json()) as {
-        results: Array<{
+        results: {
           name: string;
           url: string;
-        }>;
+        }[];
       };
 
       const items = await Promise.all(
@@ -141,7 +132,7 @@ class App extends Component<AppProps, AppState> {
           };
           return {
             name: details.name,
-            description: `Height: ${details.height}, Weight: ${details.weight}`,
+            description: `Height: ${String(details.height)}, Weight: ${String(details.weight)}`,
           };
         })
       );
@@ -156,7 +147,7 @@ class App extends Component<AppProps, AppState> {
     }
   };
 
-  handleTestError = async () => {
+  handleTestError = () => {
     this.setState({ showError: true });
   };
 

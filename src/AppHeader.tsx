@@ -2,7 +2,7 @@ import { Component, type ChangeEvent, type FormEvent } from 'react';
 import './AppHeader.css';
 import Search from './Search';
 
-type AppHeaderProps = {
+interface AppHeaderProps {
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;

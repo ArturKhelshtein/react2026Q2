@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import './Item.css';
 
-type ItemProps = {
+interface ItemProps {
   name: string;
   description: string;
 };
