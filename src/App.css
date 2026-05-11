@@ -1,0 +1,21 @@
+.app {
+    --radius-min: 8px;
+    --radius-mid: 12px;
+    --radius-max: 16px;
+    --spaicing-min: 8px;
+    --spaicing-mid: 16px;
+    --spaicing-max: 24px;
+    --stroke-min: 1px;
+    --stroke-mid: 2px;
+    --stroke-max: 4px;
+
+    width: 1126px;
+    max-width: 100%;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: var(--spaicing-max);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spaicing-mid);
+    box-sizing: border-box;
+}

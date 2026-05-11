@@ -1,0 +1,25 @@
+.item {
+    padding: 16px
+        18px;
+    border: 1px
+        solid
+        #e2e8f0;
+    border-radius: var(
+        --radius-mid
+    );
+    background: #f8f8f8;
+}
+
+.item
+    h3 {
+    margin: 0
+        0
+        8px;
+    font-size: 16px;
+}
+
+.item
+    p {
+    margin: 0;
+    color: #475569;
+}

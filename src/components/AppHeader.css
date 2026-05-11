@@ -1,0 +1,14 @@
+.app__header {
+    padding: var(
+        --spaicing-mid
+    );
+    border: var(
+            --stroke-min
+        )
+        solid
+        #dbe3f0;
+    border-radius: var(
+        --radius-max
+    );
+    background: #ffffff;
+}
