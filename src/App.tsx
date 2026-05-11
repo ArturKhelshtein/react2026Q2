@@ -3,7 +3,7 @@ import './App.css';
 import AppHeader from './components/AppHeader';
 import AppMain from './components/AppMain';
 import TestError from './components/TestError';
-import ThrowError from './ThrowError';
+import ThrowError from './components/ThrowError';
 
 interface AppItem {
   name: string;
