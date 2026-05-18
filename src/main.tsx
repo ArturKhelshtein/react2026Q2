@@ -5,7 +5,12 @@ import './index.css';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
 import AppRouter from './router.tsx';
 
-createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('Root element not found');
+}
+
+createRoot(rootElement).render(
   <StrictMode>
     <BrowserRouter basename="/react2026Q2">
       <ErrorBoundary>

@@ -3,7 +3,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { useLocalStorage } from './useLocalStorage';
 
 const localStorageMock = {
-  getItem: vi.fn(() => ''),
+  getItem: vi.fn<(key: string) => string | null>(() => '' ),
   setItem: vi.fn(),
 };
 
