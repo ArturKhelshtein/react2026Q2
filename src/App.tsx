@@ -1,4 +1,4 @@
-import { Component, type ChangeEvent, type FormEvent } from 'react';
+import { Component, type ChangeEvent, type SubmitEvent } from 'react';
 import './App.css';
 import AppHeader from './components/AppHeader';
 import AppMain from './components/AppMain';
@@ -56,7 +56,7 @@ class App extends Component<AppProps, AppState> {
     throw new Error('Failed to load data');
   };
 
-  handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const query = this.state.query.trim().toLowerCase();
