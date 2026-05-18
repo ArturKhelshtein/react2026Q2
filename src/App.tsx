@@ -1,4 +1,10 @@
-import { Component, type ChangeEvent, type SubmitEvent } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type ChangeEvent,
+  type SubmitEvent,
+} from 'react';
 import './App.css';
 import AppHeader from './components/AppHeader';
 import AppMain from './components/AppMain';
@@ -8,169 +14,163 @@ import ThrowError from './components/ThrowError';
 interface AppItem {
   name: string;
   description: string;
-};
-
-type AppProps = Record<string, never>;
-
-interface AppState {
-  query: string;
-  items: AppItem[];
-  loading: boolean;
-  error: string | null;
-  submittedQuery: string;
-  showError: boolean;
-};
+}
 
 const STORAGE_KEY = 'pokemonSearch';
 const API_URL = 'https://pokeapi.co/api/v2';
-const savedQuery = localStorage.getItem(STORAGE_KEY) ?? '';
+const getSavedQuery = () => localStorage.getItem(STORAGE_KEY) ?? '';
 
-class App extends Component<AppProps, AppState> {
-  state: AppState = {
-      query: savedQuery,
-    items: [],
-    loading: false,
-    error: null,
-    submittedQuery: savedQuery,
-    showError: false,
-  };
+function handleErrorStatus(status: number) {
+  if (status === 400) {
+    throw new Error('Invalid search request');
+  }
+  if (status === 404) {
+    throw new Error('Pokemon not found');
+  }
+  if (status >= 500) {
+    throw new Error('Server error, please try again later');
+  }
+  throw new Error('Failed to load data');
+}
 
-  componentDidMount() {
-    void this.loadPokemons(savedQuery);
+async function fetchPokemons(searchQuery: string): Promise<AppItem[]> {
+  if (searchQuery) {
+    const response = await fetch(`${API_URL}/pokemon/${searchQuery}`);
+
+    if (!response.ok) {
+      handleErrorStatus(response.status);
+    }
+
+    const details = (await response.json()) as {
+      name: string;
+      height: number;
+      weight: number;
+    };
+
+    return [
+      {
+        name: details.name,
+        description: `Height: ${String(details.height)}, Weight: ${String(details.weight)}`,
+      },
+    ];
   }
 
-  handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ query: event.target.value });
+  const response = await fetch(`${API_URL}/pokemon?limit=20&offset=0`);
+
+  if (!response.ok) {
+    handleErrorStatus(response.status);
+  }
+
+  const list = (await response.json()) as {
+    results: {
+      name: string;
+      url: string;
+    }[];
   };
 
-  _handleErrorStatus = (status: number) => {
-    if (status === 400) {
-      throw new Error('Invalid search request');
+  return await Promise.all(
+    list.results.map(async (pokemon) => {
+      const detailsResponse = await fetch(pokemon.url);
+      if (!detailsResponse.ok) {
+        handleErrorStatus(detailsResponse.status);
+      }
+      const details = (await detailsResponse.json()) as {
+        name: string;
+        height: number;
+        weight: number;
+      };
+      return {
+        name: details.name,
+        description: `Height: ${String(details.height)}, Weight: ${String(details.weight)}`,
+      };
+    })
+  );
+}
+
+function App() {
+  const [query, setQuery] = useState(getSavedQuery);
+  const [items, setItems] = useState<AppItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [submittedQuery, setSubmittedQuery] = useState(getSavedQuery);
+  const [showError, setShowError] = useState<boolean>(false);
+
+  const loadPokemons = useCallback(async (searchQuery: string) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await fetchPokemons(searchQuery);
+      setItems(data);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Unknown error');
+      setItems([]);
+    } finally {
+      setLoading(false);
     }
-    if (status === 404) {
-      throw new Error('Pokemon not found');
-    }
-    if (status >= 500) {
-      throw new Error('Server error, please try again later');
-    }
-    throw new Error('Failed to load data');
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    void fetchPokemons(getSavedQuery())
+      .then((data) => {
+        if (active) setItems(data);
+      })
+      .catch((error: unknown) => {
+        if (active) {
+          setError(error instanceof Error ? error.message : 'Unknown error');
+          setItems([]);
+        }
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
   };
 
-  handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const query = this.state.query.trim().toLowerCase();
+    const normalizedQuery = query.trim().toLowerCase();
 
-    if (query === this.state.submittedQuery) {
+    if (normalizedQuery === submittedQuery) {
       return;
     }
 
-    if (!query) {
-      this.setState({ submittedQuery: '' });
-      void this.loadPokemons('');
+    if (!normalizedQuery) {
+      setSubmittedQuery('');
+      void loadPokemons('');
       localStorage.setItem(STORAGE_KEY, '');
       return;
     }
 
-    this.setState({ submittedQuery: query });
-    void this.loadPokemons(query);
-    localStorage.setItem(STORAGE_KEY, query);
+    setSubmittedQuery(normalizedQuery);
+    void loadPokemons(normalizedQuery);
+    localStorage.setItem(STORAGE_KEY, normalizedQuery);
   };
 
-  loadPokemons = async (query: string) => {
-    this.setState({ loading: true, error: null });
-
-    try {
-      if (query) {
-        const response = await fetch(`${API_URL}/pokemon/${query}`);
-
-        if (!response.ok) {
-          this._handleErrorStatus(response.status);
-        }
-
-        const details = (await response.json()) as {
-          name: string;
-          height: number;
-          weight: number;
-        };
-
-        this.setState({
-          items: [
-            {
-              name: details.name,
-              description: `Height: ${String(details.height)}, Weight: ${String(details.weight)}`,
-            },
-          ],
-        });
-
-        return;
-      }
-
-      const response = await fetch(`${API_URL}/pokemon?limit=20&offset=0`);
-
-      if (!response.ok) {
-        this._handleErrorStatus(response.status);
-      }
-
-      const list = (await response.json()) as {
-        results: {
-          name: string;
-          url: string;
-        }[];
-      };
-
-      const items = await Promise.all(
-        list.results.map(async (pokemon) => {
-          const detailsResponse = await fetch(pokemon.url);
-          if (!detailsResponse.ok) {
-            this._handleErrorStatus(detailsResponse.status);
-          }
-          const details = (await detailsResponse.json()) as {
-            name: string;
-            height: number;
-            weight: number;
-          };
-          return {
-            name: details.name,
-            description: `Height: ${String(details.height)}, Weight: ${String(details.weight)}`,
-          };
-        })
-      );
-      this.setState({ items });
-    } catch (error) {
-      this.setState({
-        error: error instanceof Error ? error.message : 'Unknown error',
-        items: [],
-      });
-    } finally {
-      this.setState({ loading: false });
-    }
+  const handleTestError = () => {
+    setShowError(true);
   };
 
-  handleTestError = () => {
-    this.setState({ showError: true });
-  };
-
-  render() {
-    const { query, items, showError } = this.state;
-
-    return (
-      <div className="app">
-        <AppHeader
-          value={query}
-          onChange={this.handleChange}
-          onSubmit={this.handleSubmit}
-        />
-        <AppMain
-          items={items}
-          error={this.state.error}
-          loading={this.state.loading}
-        />
-        <TestError onClick={this.handleTestError} />
-        {showError && <ThrowError />}
-      </div>
-    );
-  }
+  return (
+    <div className="app">
+      <AppHeader
+        value={query}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+      />
+      <AppMain items={items} error={error} loading={loading} />
+      <TestError onClick={handleTestError} />
+      {showError && <ThrowError />}
+    </div>
+  );
 }
 
 export default App;
