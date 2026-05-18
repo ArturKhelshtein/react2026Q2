@@ -5,12 +5,12 @@ import {
   type ChangeEvent,
   type SubmitEvent,
 } from 'react';
-import './App.css';
-import AppHeader from './components/AppHeader';
-import AppMain from './components/AppMain';
-import TestError from './components/TestError';
-import ThrowError from './components/ThrowError';
-import { useLocalStorage } from './hooks/useLocalStorage';
+import './HomePage.css';
+import AppHeader from '../components/AppHeader';
+import AppMain from '../components/AppMain';
+import TestError from '../components/TestError';
+import ThrowError from '../components/ThrowError';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 interface AppItem {
   name: string;
@@ -87,7 +87,7 @@ async function fetchPokemons(searchQuery: string): Promise<AppItem[]> {
   );
 }
 
-function App() {
+export default function HomePage() {
   const [storedQuery, setStoredQuery] = useLocalStorage(STORAGE_KEY, '');
   const [query, setQuery] = useState(storedQuery);
   const [items, setItems] = useState<AppItem[]>([]);
@@ -129,7 +129,8 @@ function App() {
     return () => {
       active = false;
     };
-  }, []); // mount only;
+        // eslint-disable-next-line
+  }, []);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -173,5 +174,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

@@ -1,6 +1,7 @@
 import { type ChangeEvent, type SubmitEvent } from 'react';
 import './AppHeader.css';
 import Search from './Search';
+import Navigator from './Navigator';
 
 interface AppHeaderProps {
   value: string;
@@ -8,12 +9,15 @@ interface AppHeaderProps {
   onSubmit: (event: SubmitEvent<HTMLFormElement>) => void;
 }
 
-function AppHeader({ value, onChange, onSubmit }: AppHeaderProps) {
+export default function AppHeader({
+  value,
+  onChange,
+  onSubmit,
+}: AppHeaderProps) {
   return (
     <header className="app__header">
+      <Navigator />
       <Search value={value} onChange={onChange} onSubmit={onSubmit} />
     </header>
   );
 }
-
-export default AppHeader;
