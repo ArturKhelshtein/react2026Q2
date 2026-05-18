@@ -16,7 +16,7 @@ describe('AppMain', () => {
   it('renders results when not loading and no error', () => {
     render(
       <AppMain
-        items={[{ name: 'Pikachu', description: 'Electric type' }]}
+        items={[{ name: 'Pikachu', description: 'Electric type', id: 25 }]}
         loading={false}
         error={null}
       />

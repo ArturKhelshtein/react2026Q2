@@ -1,12 +1,7 @@
-import { Component } from 'react';
+function ThrowError() {
+  throw new Error('Test error');
 
-class ThrowError extends Component {
-  componentDidMount() {
-    throw new Error('Test error');
-  }
-  render() {
-    return null;
-  }
+  return null;
 }
 
 export default ThrowError;

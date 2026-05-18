@@ -19,3 +19,15 @@
     gap: var(--spaicing-mid);
     box-sizing: border-box;
 }
+
+.home-split {
+    display: flex;
+    gap: 16px;
+  }
+  .home-split__list {
+    flex: 1;
+  }
+  .home-split__details {
+    flex: 1;
+    min-height: 200px;
+  }
