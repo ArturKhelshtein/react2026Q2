@@ -10,6 +10,7 @@ import AppHeader from './components/AppHeader';
 import AppMain from './components/AppMain';
 import TestError from './components/TestError';
 import ThrowError from './components/ThrowError';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
 interface AppItem {
   name: string;
@@ -18,7 +19,6 @@ interface AppItem {
 
 const STORAGE_KEY = 'pokemonSearch';
 const API_URL = 'https://pokeapi.co/api/v2';
-const getSavedQuery = () => localStorage.getItem(STORAGE_KEY) ?? '';
 
 function handleErrorStatus(status: number) {
   if (status === 400) {
@@ -88,11 +88,12 @@ async function fetchPokemons(searchQuery: string): Promise<AppItem[]> {
 }
 
 function App() {
-  const [query, setQuery] = useState(getSavedQuery);
+  const [storedQuery, setStoredQuery] = useLocalStorage(STORAGE_KEY, '');
+  const [query, setQuery] = useState(storedQuery);
   const [items, setItems] = useState<AppItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [submittedQuery, setSubmittedQuery] = useState(getSavedQuery);
+  const [submittedQuery, setSubmittedQuery] = useState(storedQuery);
   const [showError, setShowError] = useState<boolean>(false);
 
   const loadPokemons = useCallback(async (searchQuery: string) => {
@@ -112,7 +113,7 @@ function App() {
 
   useEffect(() => {
     let active = true;
-    void fetchPokemons(getSavedQuery())
+    void fetchPokemons(storedQuery)
       .then((data) => {
         if (active) setItems(data);
       })
@@ -128,7 +129,7 @@ function App() {
     return () => {
       active = false;
     };
-  }, []);
+  }, []); // mount only;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -145,14 +146,14 @@ function App() {
 
     if (!normalizedQuery) {
       setSubmittedQuery('');
+      setStoredQuery('');
       void loadPokemons('');
-      localStorage.setItem(STORAGE_KEY, '');
       return;
     }
 
     setSubmittedQuery(normalizedQuery);
     void loadPokemons(normalizedQuery);
-    localStorage.setItem(STORAGE_KEY, normalizedQuery);
+    setStoredQuery(normalizedQuery);
   };
 
   const handleTestError = () => {
