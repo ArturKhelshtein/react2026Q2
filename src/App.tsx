@@ -139,7 +139,7 @@ function App() {
 
     const normalizedQuery = query.trim().toLowerCase();
 
-    if (normalizedQuery === submittedQuery) {
+    if (normalizedQuery === submittedQuery && !error) {
       return;
     }
 
