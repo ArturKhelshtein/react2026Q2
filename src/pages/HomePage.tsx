@@ -5,7 +5,12 @@ import {
   type ChangeEvent,
   type SubmitEvent,
 } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import {
+  Outlet,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import './HomePage.css';
 import AppHeader from '../components/AppHeader';
 import AppMain from '../components/AppMain';
@@ -15,6 +20,7 @@ import Pagination from '../components/Pagination';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 interface AppItem {
+  id: number;
   name: string;
   description: string;
 }
@@ -53,6 +59,7 @@ async function fetchPokemons(
     }
 
     const details = (await response.json()) as {
+      id: number;
       name: string;
       height: number;
       weight: number;
@@ -61,6 +68,7 @@ async function fetchPokemons(
     return {
       items: [
         {
+          id: details.id,
           name: details.name,
           description: `Height: ${String(details.height)}, Weight: ${String(details.weight)}`,
         },
@@ -95,11 +103,13 @@ async function fetchPokemons(
         handleErrorStatus(detailsResponse.status);
       }
       const details = (await detailsResponse.json()) as {
+        id: number;
         name: string;
         height: number;
         weight: number;
       };
       return {
+        id: details.id,
         name: details.name,
         description: `Height: ${String(details.height)}, Weight: ${String(details.weight)}`,
       };
@@ -143,6 +153,12 @@ export default function HomePage() {
     },
     []
   );
+
+  const navigate = useNavigate();
+  const { detailsId } = useParams();
+  const openDetails = (id: number) => {
+    void navigate(`/details/${String(id)}?page=${String(page)}`);
+  };
 
   useEffect(() => {
     if (!searchParams.get('page')) {
@@ -197,8 +213,8 @@ export default function HomePage() {
   };
 
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
-const showPagination =
-  !loading && !error && items.length > 0 && !submittedQuery;
+  const showPagination =
+    !loading && !error && items.length > 0 && !submittedQuery;
 
   return (
     <div className="app">
@@ -207,14 +223,29 @@ const showPagination =
         onChange={handleChange}
         onSubmit={handleSubmit}
       />
-      <AppMain items={items} error={error} loading={loading} />
-      {showPagination && (
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      )}
+      <div className="home-split">
+        <div className="home-split__list">
+          <AppMain
+            items={items}
+            error={error}
+            loading={loading}
+            onItemClick={openDetails}
+            selectedId={detailsId ? Number(detailsId) : null}
+          />
+          {showPagination && (
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
+        </div>
+        {detailsId && (
+          <aside className="home-split__details">
+            <Outlet />
+          </aside>
+        )}
+      </div>
       <TestError onClick={handleTestError} />
       {showError && <ThrowError />}
     </div>

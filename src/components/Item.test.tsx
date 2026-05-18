@@ -4,7 +4,7 @@ import Item from './Item';
 
 describe('Item', () => {
   it('renders name and description', () => {
-    render(<Item name="Pikachu" description="Electric type" />);
+    render(<Item id={25} name="Pikachu" description="Electric type" />);
 
     expect(
       screen.getByRole('heading', { name: /pikachu/i })

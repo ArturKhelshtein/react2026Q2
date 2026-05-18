@@ -4,6 +4,7 @@
     padding: var(
         --spaicing-mid
     );
+    margin-bottom: var(--spaicing-mid);
     border: var(
             --stroke-min
         )
