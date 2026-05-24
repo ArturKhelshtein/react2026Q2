@@ -20,7 +20,7 @@ export default function Pagination({
         className="button"
         disabled={currentPage <= 1}
         onClick={() => {
-            onPageChange(currentPage + 1);
+            onPageChange(currentPage - 1);
           }}
       >
         Prev
