@@ -17,6 +17,7 @@ import AppMain from '../components/AppMain';
 import TestError from '../components/TestError';
 import ThrowError from '../components/ThrowError';
 import Pagination from '../components/Pagination';
+import SelectedItemsFlyout from '../components/SelectedItemsFlyout';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import type { AppItem } from '../types';
 
@@ -232,6 +233,8 @@ export default function HomePage() {
       </div>
       <TestError onClick={handleTestError} />
       {showError && <ThrowError />}
+
+      <SelectedItemsFlyout/>
     </div>
   );
 }

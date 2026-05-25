@@ -29,3 +29,11 @@
         1px
     );
 }
+
+.button--secondary {
+    background: #647081;
+}
+
+.button--secondary:hover {
+    background: #7c3aed;
+}

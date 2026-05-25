@@ -20,11 +20,9 @@ export default function AppMain({
       {loading && <p>Loading...</p>}
       {!loading && error && <p>{error}</p>}
       {!loading && !error && (
-        <Results
-          items={items}
-          onItemClick={onItemClick}
-        />
+        <Results items={items} onItemClick={onItemClick} />
       )}
+      {!loading && !error && items.length === 0 && <p>No results found</p>}
     </main>
   );
 }
