@@ -17,13 +17,10 @@ import AppMain from '../components/AppMain';
 import TestError from '../components/TestError';
 import ThrowError from '../components/ThrowError';
 import Pagination from '../components/Pagination';
+import SelectedItemsFlyout from '../components/SelectedItemsFlyout';
+import { downloadSelectedAsCsv } from '../utils/downloadCsv';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-
-interface AppItem {
-  id: number;
-  name: string;
-  description: string;
-}
+import type { AppItem } from '../types';
 
 interface FetchResult {
   items: AppItem[];
@@ -220,7 +217,6 @@ export default function HomePage() {
             error={error}
             loading={loading}
             onItemClick={openDetails}
-            selectedId={detailsId ? Number(detailsId) : null}
           />
           {showPagination && (
             <Pagination
@@ -238,6 +234,8 @@ export default function HomePage() {
       </div>
       <TestError onClick={handleTestError} />
       {showError && <ThrowError />}
+
+      <SelectedItemsFlyout onDownload={downloadSelectedAsCsv} />
     </div>
   );
 }

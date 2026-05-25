@@ -1,4 +1,4 @@
-{
+  {
   "name": "react2026q2",
   "private": true,
   "version": "0.0.0",
@@ -16,7 +16,8 @@
   "dependencies": {
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-router-dom": "^7.15.1"
+    "react-router-dom": "^7.15.1",
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

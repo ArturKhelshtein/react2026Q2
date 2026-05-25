@@ -1,18 +1,12 @@
+import type { AppItem } from '../types';
 import './AppMain.css';
 import Results from './Results';
 
-interface ResultItem {
-  id: number;
-  name: string;
-  description: string;
-}
-
 interface AppMainProps {
-  items: ResultItem[];
+  items: AppItem[];
   loading: boolean;
   error: string | null;
   onItemClick?: (id: number) => void;
-  selectedId?: number | null;
 }
 
 export default function AppMain({
@@ -20,19 +14,15 @@ export default function AppMain({
   loading,
   error,
   onItemClick,
-  selectedId,
 }: AppMainProps) {
   return (
     <main className="app__main">
       {loading && <p>Loading...</p>}
       {!loading && error && <p>{error}</p>}
       {!loading && !error && (
-        <Results
-          items={items}
-          onItemClick={onItemClick}
-          selectedId={selectedId}
-        />
+        <Results items={items} onItemClick={onItemClick} />
       )}
+      {!loading && !error && items.length === 0 && <p>No results found</p>}
     </main>
   );
 }
