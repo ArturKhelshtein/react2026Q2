@@ -1,23 +1,23 @@
-import { Component, type ChangeEvent, type FormEvent } from 'react';
+import { type ChangeEvent, type SubmitEvent } from 'react';
 import './AppHeader.css';
 import Search from './Search';
+import Navigator from './Navigator';
 
 interface AppHeaderProps {
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-};
-
-class AppHeader extends Component<AppHeaderProps> {
-  render() {
-    const { value, onChange, onSubmit } = this.props;
-
-    return (
-      <header className="app__header">
-        <Search value={value} onChange={onChange} onSubmit={onSubmit} />
-      </header>
-    );
-  }
+  onSubmit: (event: SubmitEvent<HTMLFormElement>) => void;
 }
 
-export default AppHeader;
+export default function AppHeader({
+  value,
+  onChange,
+  onSubmit,
+}: AppHeaderProps) {
+  return (
+    <header className="app__header">
+      <Navigator />
+      <Search value={value} onChange={onChange} onSubmit={onSubmit} />
+    </header>
+  );
+}

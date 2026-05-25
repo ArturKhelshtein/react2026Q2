@@ -1,0 +1,9 @@
+.navigator {
+    display: flex;
+    gap: var(--spaicing-min);
+    padding-left: var(--spaicing-min);
+    padding-bottom: var(--spaicing-min);
+}
+
+.navigator__link {
+}

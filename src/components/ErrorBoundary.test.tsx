@@ -11,7 +11,9 @@ class ThrowingChild extends Component {
 
 describe('ErrorBoundary', () => {
   beforeEach(() => {
-    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {
+      //test empty function
+    });
   });
 
   it('renders children when there is no error', () => {

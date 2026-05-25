@@ -1,4 +1,5 @@
 .item {
+    width: 100%;
     padding: 16px
         18px;
     border: 1px
@@ -16,6 +17,7 @@
         0
         8px;
     font-size: 16px;
+    color: #161616;
 }
 
 .item
@@ -23,3 +25,14 @@
     margin: 0;
     color: #475569;
 }
+
+.item--selected {
+    border-color: #3b82f6;
+    background: #eff6ff;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  }
+  
+  .item:hover {
+    cursor: pointer;
+    background: #f1f5f9;
+  }

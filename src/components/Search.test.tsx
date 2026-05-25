@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { useState, type ChangeEvent, type SubmitEvent  } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
@@ -6,7 +6,7 @@ import Search from './Search';
 
 function SearchHarness() {
   const [value, setValue] = useState('');
-  const handleSubmit = vi.fn((event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = vi.fn((event: SubmitEvent <HTMLFormElement>) => {
     event.preventDefault();
   });
   return (

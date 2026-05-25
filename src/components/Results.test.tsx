@@ -7,8 +7,8 @@ describe('Results', () => {
     render(
       <Results
         items={[
-          { name: 'Pikachu', description: 'Electric type' },
-          { name: 'Bulbasaur', description: 'Grass type' },
+          { name: 'Pikachu', description: 'Electric type', id: 25 },
+          { name: 'Bulbasaur', description: 'Grass type', id: 1 },
         ]}
       />
     );
