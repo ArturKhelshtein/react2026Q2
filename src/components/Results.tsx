@@ -22,8 +22,8 @@ export default function Results({ items, onItemClick }: ResultsProps) {
             description={item.description}
             isSelected={isSelected(item.id)}
             onToggle={() => {
-                toggleItem(item)}
-            }
+              toggleItem(item);
+            }}
             onOpenDetails={() => onItemClick?.(item.id)}
           />
         ))}

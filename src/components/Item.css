@@ -2,8 +2,7 @@
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    width: 90%;
-    padding: 16px 18px;
+    width: 100%;
     border: 1px solid #e2e8f0;
     border-radius: var(--radius-mid);
     background: #f8f8f8;

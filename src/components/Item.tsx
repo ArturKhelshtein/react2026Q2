@@ -24,29 +24,23 @@ export default function Item({
     e.stopPropagation();
   };
 
-  const handleCheckboxChange = () => {
-    onToggle();
-  };
-
   return (
     <li className={`item ${isSelected ? 'item--selected' : ''}`}>
-      <div className="item__checkbox">
-        <input
-          type="checkbox"
-          checked={isSelected}
-          onChange={handleCheckboxChange}
-          onClick={handleCheckboxClick}
-          aria-label={`Select ${name}`}
-        />
-      </div>
-
       <button
         className="item__content"
         onClick={handleContentClick}
         onKeyDown={handleContentKeyDown}
         type="button"
-        tabIndex={0}
       >
+        <div className="item__checkbox">
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={onToggle}
+            onClick={handleCheckboxClick}
+            aria-label={`Select ${name}`}
+          />
+        </div>
         <h3>{name}</h3>
         <p>{description}</p>
       </button>
