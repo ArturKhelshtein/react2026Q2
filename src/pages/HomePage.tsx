@@ -169,12 +169,6 @@ export default function HomePage() {
     void loadPokemons(submittedQuery, page);
   }, [submittedQuery, page, searchParams, loadPokemons]);
 
-//   useEffect(() => {
-//     if (!searchParams.get('page')) {
-//       setSearchParams({ page: '1' }, { replace: true });
-//     }
-//   }, [searchParams, setSearchParams]);
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
@@ -242,7 +236,7 @@ export default function HomePage() {
         </div>
         {detailsId && (
           <aside className="home-split__details">
-            <Outlet />
+            <Outlet key={detailsId} />
           </aside>
         )}
       </div>

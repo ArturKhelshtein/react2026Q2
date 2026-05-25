@@ -39,7 +39,9 @@ export default function PokemonDetails() {
         }
       )
       .finally(() => {
-        if (active) setLoading(false);
+        if (active) {
+            setLoading(false);
+        }
       });
 
     return () => {
