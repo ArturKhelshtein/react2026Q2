@@ -48,6 +48,6 @@ describe('Pagination', () => {
     const onPageChange = vi.fn();
     render(<Pagination currentPage={3} totalPages={5} onPageChange={onPageChange} />);
     await user.click(screen.getByRole('button', { name: /prev/i }));
-    expect(onPageChange).toHaveBeenCalledWith(4);
+    expect(onPageChange).toHaveBeenCalledWith(2);
   });
 });

@@ -161,13 +161,9 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    if (!searchParams.get('page')) {
-      return;
-    }
-
     //eslint-disable-next-line
     void loadPokemons(submittedQuery, page);
-  }, [submittedQuery, page, searchParams, loadPokemons]);
+  }, [submittedQuery, page, loadPokemons]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
