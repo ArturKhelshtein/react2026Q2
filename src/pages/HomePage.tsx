@@ -18,6 +18,7 @@ import TestError from '../components/TestError';
 import ThrowError from '../components/ThrowError';
 import Pagination from '../components/Pagination';
 import SelectedItemsFlyout from '../components/SelectedItemsFlyout';
+import { downloadSelectedAsCsv } from '../utils/downloadCsv';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import type { AppItem } from '../types';
 
@@ -234,7 +235,7 @@ export default function HomePage() {
       <TestError onClick={handleTestError} />
       {showError && <ThrowError />}
 
-      <SelectedItemsFlyout/>
+      <SelectedItemsFlyout onDownload={downloadSelectedAsCsv} />
     </div>
   );
 }

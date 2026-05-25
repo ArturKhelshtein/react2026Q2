@@ -9,46 +9,44 @@ const item1: AppItem = { id: 1, name: 'Pikachu', description: 'Electric type' };
 const item2: AppItem = { id: 2, name: 'Charizard', description: 'Fire type' };
 
 describe('SelectedItemsFlyout', () => {
+  const mockOnDownload = vi.fn();
+
   beforeEach(() => {
     useSelectedStore.getState().unselectAll();
+    vi.clearAllMocks();
   });
 
   it('does not render when no items are selected', () => {
-    render(<SelectedItemsFlyout />);
+    render(<SelectedItemsFlyout onDownload={mockOnDownload} />);
 
     expect(screen.queryByText(/selected/i)).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: /unselect all/i })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 
   it('renders correctly with 1 selected item', () => {
     useSelectedStore.getState().toggleItem(item1);
 
-    render(<SelectedItemsFlyout />);
+    render(<SelectedItemsFlyout onDownload={mockOnDownload} />);
 
     expect(screen.getByText('1 item selected')).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /unselect all/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /unselect all/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /download/i })).toBeInTheDocument();
   });
 
   it('renders correctly with multiple selected items', () => {
     useSelectedStore.getState().toggleItem(item1);
     useSelectedStore.getState().toggleItem(item2);
 
-    render(<SelectedItemsFlyout />);
+    render(<SelectedItemsFlyout onDownload={mockOnDownload} />);
 
     expect(screen.getByText('2 items selected')).toBeInTheDocument();
   });
 
-  it('hides itself after clicking "Unselect all"', async () => {
+  it('calls unselectAll when "Unselect all" button is clicked', async () => {
     const user = userEvent.setup();
 
     useSelectedStore.getState().toggleItem(item1);
-    render(<SelectedItemsFlyout />);
-
-    expect(screen.getByText('1 item selected')).toBeInTheDocument();
+    render(<SelectedItemsFlyout onDownload={mockOnDownload} />);
 
     await user.click(screen.getByRole('button', { name: /unselect all/i }));
 
@@ -56,17 +54,17 @@ describe('SelectedItemsFlyout', () => {
     expect(useSelectedStore.getState().selectedItems).toHaveLength(0);
   });
 
-  it('calls unselectAll when button is clicked', async () => {
+  it('calls onDownload with selected items when Download button is clicked', async () => {
     const user = userEvent.setup();
-    const unselectAllSpy = vi.fn<() => void>();
-
-    useSelectedStore.setState({ unselectAll: unselectAllSpy });
 
     useSelectedStore.getState().toggleItem(item1);
-    render(<SelectedItemsFlyout />);
+    useSelectedStore.getState().toggleItem(item2);
 
-    await user.click(screen.getByRole('button', { name: /unselect all/i }));
+    render(<SelectedItemsFlyout onDownload={mockOnDownload} />);
 
-    expect(unselectAllSpy).toHaveBeenCalledTimes(1);
+    await user.click(screen.getByRole('button', { name: /download/i }));
+
+    expect(mockOnDownload).toHaveBeenCalledTimes(1);
+    expect(mockOnDownload).toHaveBeenCalledWith([item1, item2]);
   });
 });

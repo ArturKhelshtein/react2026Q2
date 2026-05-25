@@ -1,7 +1,18 @@
 import './SelectedItemsFlyout.css';
-import { useSelectedStore, selectSelectedCount } from '../store/selectedStore';
+import {
+  useSelectedStore,
+  selectSelectedItems,
+  selectSelectedCount,
+} from '../store/selectedStore';
 
-export default function SelectedItemsFlyout() {
+interface SelectedItemsFlyoutProps {
+  onDownload: (items: unknown[]) => void;
+}
+
+export default function SelectedItemsFlyout({
+  onDownload,
+}: SelectedItemsFlyoutProps) {
+  const selectedItems = useSelectedStore(selectSelectedItems);
   const count = useSelectedStore(selectSelectedCount);
   const unselectAll = useSelectedStore((state) => state.unselectAll);
 
@@ -14,9 +25,20 @@ export default function SelectedItemsFlyout() {
           {count} {count === 1 ? 'item' : 'items'} selected
         </span>
 
-        <button className="button button--secondary" onClick={unselectAll}>
-          Unselect all
-        </button>
+        <div className="flyout__actions">
+          <button className="button button--secondary" onClick={unselectAll}>
+            Unselect all
+          </button>
+
+          <button
+            className="button"
+            onClick={() => {
+              onDownload(selectedItems);
+            }}
+          >
+            Download
+          </button>
+        </div>
       </div>
     </div>
   );
