@@ -1,13 +1,6 @@
 import { type KeyboardEvent } from 'react';
 import './Item.css';
-
-interface ItemProps {
-  id: number;
-  name: string;
-  description: string;
-  selectedId?: number | null;
-  onClick?: (id: number) => void;
-}
+import type { AppItem } from '../types';
 
 export default function Item({
   id,
@@ -15,7 +8,7 @@ export default function Item({
   description,
   selectedId = null,
   onClick,
-}: ItemProps) {
+}: AppItem) {
   const isSelected = id === selectedId;
 
   const handleClick = () => {

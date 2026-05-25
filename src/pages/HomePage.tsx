@@ -18,12 +18,7 @@ import TestError from '../components/TestError';
 import ThrowError from '../components/ThrowError';
 import Pagination from '../components/Pagination';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-
-interface AppItem {
-  id: number;
-  name: string;
-  description: string;
-}
+import type { AppItem } from '../types';
 
 interface FetchResult {
   items: AppItem[];

@@ -1,14 +1,9 @@
 import './Results.css';
 import Item from './Item';
-
-interface ResultItem {
-  id: number;
-  name: string;
-  description: string;
-}
+import type { AppItem } from '../types';
 
 interface ResultsProps {
-  items: ResultItem[];
+  items: AppItem[];
   onItemClick?: (id: number) => void;
   selectedId?: number | null;
 }
