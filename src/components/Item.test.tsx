@@ -1,11 +1,24 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Item from './Item';
 
 describe('Item', () => {
+  const defaultProps = {
+    id: 25,
+    name: 'Pikachu',
+    description: 'Electric type',
+    isSelected: false,
+    onToggle: vi.fn(),
+    onOpenDetails: vi.fn(),
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('renders name and description', () => {
-    render(<Item id={25} name="Pikachu" description="Electric type" />);
+    render(<Item {...defaultProps} />);
 
     expect(
       screen.getByRole('heading', { name: /pikachu/i })
@@ -13,48 +26,77 @@ describe('Item', () => {
     expect(screen.getByText(/electric type/i)).toBeInTheDocument();
   });
 
-  it('calls onClick when clicked', async () => {
+  it('adds "item--selected" class when isSelected is true', () => {
+    render(<Item {...defaultProps} isSelected={true} />);
+    expect(screen.getByRole('listitem')).toHaveClass('item--selected');
+  });
+
+  it('does not add "item--selected" class when isSelected is false', () => {
+    render(<Item {...defaultProps} isSelected={false} />);
+    expect(screen.getByRole('listitem')).not.toHaveClass('item--selected');
+  });
+
+    // === Content button ===
+  it('calls onOpenDetails when clicking on content', async () => {
     const user = userEvent.setup();
-    const onClick = vi.fn();
-    render(<Item id={25} name="Pikachu" description="Electric type" onClick={onClick} />);
+    const onOpenDetails = vi.fn();
+
+    render(<Item {...defaultProps} onOpenDetails={onOpenDetails} />);
 
     await user.click(screen.getByRole('button'));
-    expect(onClick).toHaveBeenCalledWith(25);
+    expect(onOpenDetails).toHaveBeenCalledTimes(1);
   });
 
-  it('applies selected class when selectedId matches id', () => {
-    render(<Item id={25} name="Pikachu" description="Electric type" selectedId={25} />);
-    expect(screen.getByRole('button')).toHaveClass('item--selected');
+  it('calls onOpenDetails when pressing Enter on content button', () => {
+    const onOpenDetails = vi.fn();
+    render(<Item {...defaultProps} onOpenDetails={onOpenDetails} />);
+
+    fireEvent.keyDown(screen.getByRole('button'), { key: 'Enter' });
+    expect(onOpenDetails).toHaveBeenCalledTimes(1);
   });
 
-  it('does not apply selected class when selectedId does not match', () => {
-    render(<Item id={25} name="Pikachu" description="Electric type" selectedId={10} />);
-    expect(screen.getByRole('button')).not.toHaveClass('item--selected');
+  it('calls onOpenDetails when pressing Space on content button', () => {
+    const onOpenDetails = vi.fn();
+    render(<Item {...defaultProps} onOpenDetails={onOpenDetails} />);
+
+    fireEvent.keyDown(screen.getByRole('button'), { key: ' ' });
+    expect(onOpenDetails).toHaveBeenCalledTimes(1);
   });
-
-  it('calls onClick when Enter is pressed', async () => {
-    const user = userEvent.setup();
-    const onClick = vi.fn();
-    render(<Item id={25} name="Pikachu" description="Electric type" onClick={onClick} />);
-
-    await user.type(screen.getByRole('button'), '{enter}');
-    expect(onClick).toHaveBeenCalledWith(25);
-  });
-
-  it('calls onClick when Space is pressed', async () => {
-    const user = userEvent.setup();
-    const onClick = vi.fn();
-    render(<Item id={25} name="Pikachu" description="Electric type" onClick={onClick} />);
-
-    await user.type(screen.getByRole('button'), ' ');
-    expect(onClick).toHaveBeenCalledWith(25);
-  });
-
-  it('does not call onClick on other keys', () => {
-    const onClick = vi.fn();
-    render(<Item id={25} name="Pikachu" description="Electric type" onClick={onClick} />);
+  it('does not call onOpenDetails on other keys', () => {
+    const onOpenDetails = vi.fn();
+    render(<Item {...defaultProps} onOpenDetails={onOpenDetails} />);
 
     fireEvent.keyDown(screen.getByRole('button'), { key: 'ArrowDown' });
-    expect(onClick).not.toHaveBeenCalled();
+    expect(onOpenDetails).not.toHaveBeenCalled();
+  });
+
+  // === Checkbox ===
+  it('calls onToggle when clicking the checkbox', async () => {
+    const user = userEvent.setup();
+    const onToggle = vi.fn();
+
+    render(<Item {...defaultProps} onToggle={onToggle} />);
+
+    await user.click(screen.getByRole('checkbox'));
+    expect(onToggle).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not call onOpenDetails when clicking the checkbox', async () => {
+    const user = userEvent.setup();
+    const onToggle = vi.fn();
+    const onOpenDetails = vi.fn();
+
+    render(
+      <Item
+        {...defaultProps}
+        onToggle={onToggle}
+        onOpenDetails={onOpenDetails}
+      />
+    );
+
+    await user.click(screen.getByRole('checkbox'));
+
+    expect(onToggle).toHaveBeenCalledTimes(1);
+    expect(onOpenDetails).not.toHaveBeenCalled();
   });
 });
