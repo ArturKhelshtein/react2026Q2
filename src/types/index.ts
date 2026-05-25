@@ -2,6 +2,10 @@ export interface AppItem {
   id: number;
   name: string;
   description: string;
-  selectedId?: number | null;
-  onClick?: (id: number) => void;
+}
+
+export interface ItemProps extends AppItem {
+  isSelected: boolean;
+  onToggle: () => void;
+  onOpenDetails: () => void;
 }

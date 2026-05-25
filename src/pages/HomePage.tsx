@@ -215,7 +215,6 @@ export default function HomePage() {
             error={error}
             loading={loading}
             onItemClick={openDetails}
-            selectedId={detailsId ? Number(detailsId) : null}
           />
           {showPagination && (
             <Pagination

@@ -1,37 +1,52 @@
 import { type KeyboardEvent } from 'react';
 import './Item.css';
-import type { AppItem } from '../types';
+import type { ItemProps } from '../types';
 
 export default function Item({
-  id,
   name,
   description,
-  selectedId = null,
-  onClick,
-}: AppItem) {
-  const isSelected = id === selectedId;
-
-  const handleClick = () => {
-    onClick?.(id);
+  isSelected,
+  onToggle,
+  onOpenDetails,
+}: ItemProps) {
+  const handleContentClick = () => {
+    onOpenDetails();
   };
 
-  const handleKeyDown = (event: KeyboardEvent) => {
+  const handleContentKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      onClick?.(id);
+      onOpenDetails();
     }
   };
 
+  const handleCheckboxClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+  };
+
+  const handleCheckboxChange = () => {
+    onToggle();
+  };
+
   return (
-    <li>
+    <li className={`item ${isSelected ? 'item--selected' : ''}`}>
+      <div className="item__checkbox">
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={handleCheckboxChange}
+          onClick={handleCheckboxClick}
+          aria-label={`Select ${name}`}
+        />
+      </div>
+
       <button
-        className={`item ${isSelected ? 'item--selected' : ''}`}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
+        className="item__content"
+        onClick={handleContentClick}
+        onKeyDown={handleContentKeyDown}
         type="button"
         tabIndex={0}
       >
-        {' '}
         <h3>{name}</h3>
         <p>{description}</p>
       </button>

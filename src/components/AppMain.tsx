@@ -7,7 +7,6 @@ interface AppMainProps {
   loading: boolean;
   error: string | null;
   onItemClick?: (id: number) => void;
-  selectedId?: number | null;
 }
 
 export default function AppMain({
@@ -15,7 +14,6 @@ export default function AppMain({
   loading,
   error,
   onItemClick,
-  selectedId,
 }: AppMainProps) {
   return (
     <main className="app__main">
@@ -25,7 +23,6 @@ export default function AppMain({
         <Results
           items={items}
           onItemClick={onItemClick}
-          selectedId={selectedId}
         />
       )}
     </main>
