@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
 import AppRouter from './router.tsx';
+import QueryProvider from './providers/QueryProvider.tsx';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -13,9 +14,11 @@ if (!rootElement) {
 createRoot(rootElement).render(
   <StrictMode>
     <BrowserRouter basename="/react2026Q2">
-      <ErrorBoundary>
-        <AppRouter />
-      </ErrorBoundary>
+      <QueryProvider>
+        <ErrorBoundary>
+          <AppRouter />
+        </ErrorBoundary>
+      </QueryProvider>
     </BrowserRouter>
   </StrictMode>
 );
