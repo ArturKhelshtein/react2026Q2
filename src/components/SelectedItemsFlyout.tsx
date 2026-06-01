@@ -4,9 +4,10 @@ import {
   selectSelectedItems,
   selectSelectedCount,
 } from '../store/selectedStore';
+import type { AppItem } from '../types';
 
 interface SelectedItemsFlyoutProps {
-  onDownload: (items: unknown[]) => void;
+  onDownload: (items: AppItem[]) => void;
 }
 
 export default function SelectedItemsFlyout({

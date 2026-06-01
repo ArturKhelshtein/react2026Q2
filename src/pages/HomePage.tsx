@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useState,
-  type ChangeEvent,
-  type SubmitEvent,
-} from 'react';
+import { useState, type ChangeEvent, type SubmitEvent } from 'react';
 import {
   Outlet,
   useNavigate,
@@ -20,147 +14,44 @@ import Pagination from '../components/Pagination';
 import SelectedItemsFlyout from '../components/SelectedItemsFlyout';
 import { downloadSelectedAsCsv } from '../utils/downloadCsv';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import type { AppItem } from '../types';
-
-interface FetchResult {
-  items: AppItem[];
-  totalCount: number | null;
-}
+import {
+  usePokemonList,
+  usePokemonSearch,
+} from '../hooks/usePokemonQueries.ts';
 
 const STORAGE_KEY = 'pokemonSearch';
-const API_URL = 'https://pokeapi.co/api/v2';
 const PAGE_SIZE = 20;
-
-function handleErrorStatus(status: number) {
-  if (status === 400) {
-    throw new Error('Invalid search request');
-  }
-  if (status === 404) {
-    throw new Error('Pokemon not found');
-  }
-  if (status >= 500) {
-    throw new Error('Server error, please try again later');
-  }
-  throw new Error('Failed to load data');
-}
-
-async function fetchPokemons(
-  searchQuery: string,
-  page: number
-): Promise<FetchResult> {
-  if (searchQuery) {
-    const response = await fetch(`${API_URL}/pokemon/${searchQuery}`);
-
-    if (!response.ok) {
-      handleErrorStatus(response.status);
-    }
-
-    const details = (await response.json()) as {
-      id: number;
-      name: string;
-      height: number;
-      weight: number;
-    };
-
-    return {
-      items: [
-        {
-          id: details.id,
-          name: details.name,
-          description: `Height: ${String(details.height)}, Weight: ${String(details.weight)}`,
-        },
-      ],
-      totalCount: null,
-    };
-  }
-
-  const safePage = Math.max(1, page);
-  const offset = (safePage - 1) * PAGE_SIZE;
-
-  const response = await fetch(
-    `${API_URL}/pokemon?limit=${String(PAGE_SIZE)}&offset=${String(offset)}`
-  );
-
-  if (!response.ok) {
-    handleErrorStatus(response.status);
-  }
-
-  const list = (await response.json()) as {
-    count: number;
-    results: {
-      name: string;
-      url: string;
-    }[];
-  };
-
-  const items = await Promise.all(
-    list.results.map(async (pokemon) => {
-      const detailsResponse = await fetch(pokemon.url);
-      if (!detailsResponse.ok) {
-        handleErrorStatus(detailsResponse.status);
-      }
-      const details = (await detailsResponse.json()) as {
-        id: number;
-        name: string;
-        height: number;
-        weight: number;
-      };
-      return {
-        id: details.id,
-        name: details.name,
-        description: `Height: ${String(details.height)}, Weight: ${String(details.weight)}`,
-      };
-    })
-  );
-
-  return { items, totalCount: list.count };
-}
 
 export default function HomePage() {
   const [storedQuery, setStoredQuery] = useLocalStorage(STORAGE_KEY, '');
   const [query, setQuery] = useState(storedQuery);
-  const [items, setItems] = useState<AppItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [submittedQuery, setSubmittedQuery] = useState(storedQuery);
-  const [showError, setShowError] = useState<boolean>(false);
+  const [showError, setShowError] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
-  const [totalCount, setTotalCount] = useState(0);
 
-  const loadPokemons = useCallback(
-    async (searchQuery: string, pageNumber: number) => {
-      setLoading(true);
-      setError(null);
+  const listQuery = usePokemonList(page);
+  const searchQuery = usePokemonSearch(submittedQuery);
 
-      try {
-        const { items: data, totalCount: count } = await fetchPokemons(
-          searchQuery,
-          pageNumber
-        );
-        setItems(data);
-        setTotalCount(count ?? 0);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
-        setItems([]);
-        setTotalCount(0);
-      } finally {
-        setLoading(false);
-      }
-    },
-    []
-  );
+  const isSearch = submittedQuery.length > 0;
+  const activeQuery = isSearch ? searchQuery : listQuery;
+
+  const { items, totalCount } = activeQuery.data ?? {
+    items: [],
+    totalCount: null,
+  };
+  const loading = activeQuery.isLoading;
+  const error = activeQuery.error
+    ? activeQuery.error instanceof Error
+      ? activeQuery.error.message
+      : 'Unknown error'
+    : null;
 
   const navigate = useNavigate();
   const { detailsId } = useParams();
   const openDetails = (id: number) => {
     void navigate(`/details/${String(id)}?page=${String(page)}`);
   };
-
-  useEffect(() => {
-    //eslint-disable-next-line
-    void loadPokemons(submittedQuery, page);
-  }, [submittedQuery, page, loadPokemons]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -199,7 +90,7 @@ export default function HomePage() {
     setShowError(true);
   };
 
-  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil((totalCount ?? 0) / PAGE_SIZE));
   const showPagination =
     !loading && !error && items.length > 0 && !submittedQuery;
 

@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import './PokemonDetails.css';
-
-const API_URL = 'https://pokeapi.co/api/v2';
+import { usePokemonDetails } from '../hooks/usePokemonQueries';
 
 export default function PokemonDetails() {
   const { detailsId } = useParams();
@@ -10,46 +8,7 @@ export default function PokemonDetails() {
   const navigate = useNavigate();
   const page = searchParams.get('page') ?? '1';
 
-  const [spriteUrl, setSpriteUrl] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [name, setName] = useState('');
-
-  useEffect(() => {
-    let active = true;
-
-    if (!detailsId) {
-      return;
-    }
-
-    void fetch(`${API_URL}/pokemon/${detailsId}`)
-      .then((r) => r.json())
-      .then(
-        (data: {
-          name: string;
-          sprites: {
-            other: {
-              dream_world: { front_default: string | null };
-            };
-          };
-        }) => {
-          if (active) {
-            setName(data.name);
-            setSpriteUrl(data.sprites.other.dream_world.front_default ?? '');
-          }
-        }
-      )
-      .finally(() => {
-        if (active) {
-            setLoading(false);
-        }
-      });
-
-    return () => {
-      active = false;
-      setName('');
-      setSpriteUrl('');
-    };
-  }, [detailsId]);
+  const { data, isLoading, error } = usePokemonDetails(detailsId ?? '');
 
   return (
     <div className="details-panel">
@@ -62,20 +21,20 @@ export default function PokemonDetails() {
       >
         Close
       </button>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
+      {isLoading && <p>Loading...</p>}
+      {error && <p>{error instanceof Error ? error.message : 'Unknown error'}</p>}
+      {!isLoading && !error && data && (
         <>
-          {spriteUrl && (
+          {data.spriteUrl && (
             <img
-              src={spriteUrl}
-              alt={name}
+              src={data.spriteUrl}
+              alt={data.name}
               className="details-sprite"
               width={200}
               height={200}
             />
           )}
-          <h2>{name}</h2>
+          <h2>{data.name}</h2>
         </>
       )}
     </div>
