@@ -2,19 +2,33 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import PokemonDetails from './PokemonDetails';
 
 const fetchMock = vi.fn<() => Promise<Response>>();
 vi.stubGlobal('fetch', fetchMock);
 
-const TestWrapper = ({ initialEntry = '/details/25?page=2' }: { initialEntry?: string }) => (
-  <MemoryRouter initialEntries={[initialEntry]}>
-    <Routes>
-      <Route path="/details/:detailsId" element={<PokemonDetails />} />
-      <Route path="/" element={<div>Home</div>} />
-    </Routes>
-  </MemoryRouter>
-);
+const TestWrapper = ({ initialEntry = '/details/25?page=2' }: { initialEntry?: string }) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: Infinity,
+        retry: false,
+      },
+    },
+  });
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <Routes>
+          <Route path="/details/:detailsId" element={<PokemonDetails />} />
+          <Route path="/" element={<div>Home</div>} />
+        </Routes>
+      </MemoryRouter>
+    </QueryClientProvider>
+  );
+};
 
 describe('PokemonDetails', () => {
   beforeEach(() => {
@@ -23,7 +37,7 @@ describe('PokemonDetails', () => {
 
   it('shows loading state initially', () => {
     fetchMock.mockImplementation(() => new Promise(() => {
-        //mock func
+      // never resolves to keep loading state
     }));
     render(<TestWrapper />);
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -104,5 +118,14 @@ describe('PokemonDetails', () => {
 
     await user.click(screen.getByRole('button', { name: /close/i }));
     expect(screen.getByText(/home/i)).toBeInTheDocument();
+  });
+
+  it('shows error message when fetch fails', async () => {
+    fetchMock.mockRejectedValueOnce(new Error('Failed to fetch details'));
+    render(<TestWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/failed to fetch details/i)).toBeInTheDocument();
+    });
   });
 });
