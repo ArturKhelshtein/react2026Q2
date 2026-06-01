@@ -14,7 +14,10 @@ import Pagination from '../components/Pagination';
 import SelectedItemsFlyout from '../components/SelectedItemsFlyout';
 import { downloadSelectedAsCsv } from '../utils/downloadCsv';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import { usePokemonList, usePokemonSearch } from '../hooks/usePokemonQueries.ts';
+import {
+  usePokemonList,
+  usePokemonSearch,
+} from '../hooks/usePokemonQueries.ts';
 
 const STORAGE_KEY = 'pokemonSearch';
 const PAGE_SIZE = 20;
@@ -38,7 +41,11 @@ export default function HomePage() {
     totalCount: null,
   };
   const loading = activeQuery.isLoading;
-  const error = activeQuery.error?.message ?? null;
+  const error = activeQuery.error
+    ? activeQuery.error instanceof Error
+      ? activeQuery.error.message
+      : 'Unknown error'
+    : null;
 
   const navigate = useNavigate();
   const { detailsId } = useParams();
