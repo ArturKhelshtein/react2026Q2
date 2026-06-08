@@ -1,14 +1,14 @@
 import { z } from "zod";
 
 const checkEmail = (email: string): boolean => {
-  if (!email.includes("@")) return false;
-  const parts = email.split("@");
-  if (parts.length !== 2) return false;
-  const [local, domain] = parts;
-  if (local || local.trim().length === 0) return false;
-  if (domain || domain.includes(".")) return false;
-  return true;
-};
+    if (!email.includes("@")) return false;
+    const parts = email.split("@");
+    if (parts.length !== 2) return false;
+    const [local, domain] = parts;
+    if (!local.trim()) return false;
+    if (!domain.includes(".")) return false;
+    return true;
+  };
 
 export const passwordStrength = (password: string): number => {
   let score = 0;
@@ -43,9 +43,9 @@ export const formSchema = z
     password: z.string().min(1, "Password is required"),
     confirmPassword: z.string().min(1, "Confirm password is required"),
     image: z.string().min(1, "Image is required"),
-    terms: z.literal(true, {
-      errorMap: () => ({ message: "You must accept the terms" }),
-    }),
+    terms: z.boolean().refine((val) => { return val}, {
+        message: 'You must accept the terms',
+      }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords must match",

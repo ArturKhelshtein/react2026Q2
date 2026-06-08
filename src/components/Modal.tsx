@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import "./Modal.css";
 
@@ -26,6 +26,7 @@ export default function Modal({
 }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
+  const [modalRoot] = useState(() => document.getElementById("modal-root"));
 
   useEffect(() => {
     if (!isOpen) return;
@@ -90,7 +91,6 @@ export default function Modal({
 
   if (!isOpen) return null;
 
-  const modalRoot = document.getElementById("modal-root");
   if (!modalRoot) return null;
 
   return createPortal(

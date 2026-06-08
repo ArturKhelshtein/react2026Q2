@@ -42,8 +42,8 @@ describe('Modal', () => {
       </Modal>
     );
     const overlay = getModalRoot()?.querySelector('.modal-overlay');
-    expect(overlay).not.toBeNull();
-    await userEvent.click(overlay!);
+    if (!overlay) throw new Error('Overlay not found');
+    await userEvent.click(overlay);
     expect(onClose).toHaveBeenCalledOnce();
   });
 
@@ -66,8 +66,8 @@ describe('Modal', () => {
       </Modal>
     );
     const closeBtn = getModalRoot()?.querySelector('[aria-label="Close modal"]');
-    expect(closeBtn).not.toBeNull();
-    await userEvent.click(closeBtn!);
+    if (!closeBtn) throw new Error('Close button not found');
+    await userEvent.click(closeBtn);
     expect(onClose).toHaveBeenCalledOnce();
   });
 });

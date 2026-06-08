@@ -109,3 +109,60 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+.field {
+    margin-bottom: 1rem;
+}
+
+.field-label {
+display: block;
+margin-bottom: 0.25rem;
+font-weight: 600;
+}
+
+.field-label-inline {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+cursor: pointer;
+}
+
+.field-error {
+display: block;
+color: #dc2626;
+font-size: 0.875rem;
+margin-top: 0.25rem;
+min-height: 1.2em;
+}
+
+.password-strength {
+display: block;
+font-size: 0.875rem;
+margin-top: 0.25rem;
+}
+
+.score-0 { color: #dc2626; }
+.score-1 { color: #ea580c; }
+.score-2 { color: #ca8a04; }
+.score-3 { color: #16a34a; }
+.score-4 { color: #15803d; }
+
+.form-hint {
+color: #6b7280;
+font-size: 0.875rem;
+margin-top: 0.5rem;
+}
+
+input,
+select {
+padding: 0.5rem;
+border: 1px solid #d1d5db;
+border-radius: 4px;
+font: inherit;
+width: 100%;
+box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+width: auto;
+}
