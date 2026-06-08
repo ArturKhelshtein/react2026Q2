@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const checkEmail = (email: string): boolean => {
+export const checkEmail = (email: string): boolean => {
     if (!email.includes("@")) return false;
     const parts = email.split("@");
     if (parts.length !== 2) return false;
