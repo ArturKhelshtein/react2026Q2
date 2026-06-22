@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { ThemeProvider } from '@/providers/ThemeProvider';
+import ThemeProvider from '@/providers/ThemeProvider';
 
 export const metadata: Metadata = {
   title: 'Pokemon App',

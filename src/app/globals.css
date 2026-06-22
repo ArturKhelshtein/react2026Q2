@@ -157,3 +157,25 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+.not-found {
+    padding: var(--spacing-max);
+    text-align: center;
+  }
+  
+  .not-found h1 {
+    font-size: 80px;
+    margin-bottom: var(--spacing-mid);
+  }
+  
+  .not-found a {
+    display: inline-block;
+    margin-top: var(--spacing-mid);
+    color: var(--primary);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .not-found a:hover {
+    text-decoration: underline;
+  }

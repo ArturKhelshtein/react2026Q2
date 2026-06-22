@@ -1,0 +1,17 @@
+.about {
+  padding: var(--spacing-max);
+  text-align: center;
+}
+
+.about p {
+  margin-bottom: var(--spacing-min);
+}
+
+.about a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.about a:hover {
+  color: var(--primary-hover);
+}

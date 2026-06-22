@@ -3,6 +3,7 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import AppHeader from '@/components/AppHeader';
+import { setRequestLocale } from 'next-intl/server';
 
 export default async function LocaleLayout({
   children,
@@ -17,6 +18,7 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  setRequestLocale(locale); 
   const messages = await getMessages();
 
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTheme } from '@/providers/ThemeProvider';
+import { useTheme } from '@/hooks/useTheme';
 import './ThemeToggle.css';
 
 export default function ThemeToggle() {
