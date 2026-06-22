@@ -8,9 +8,13 @@
     },
     "AboutPage": {
         "title": "About",
-        "description": "Author: Artur Khelshtein"
+        "author": "Author: Artur Khelshtein",
+        "course": "Course:",
+        "courseLink": "RS School React course",
+        "backToHome": "Back to Home"
     },
     "NotFound": {
-        "message": "Page not found."
+        "message": "Page not found.",
+        "backToHome": "Back to Home"
     }
 }
