@@ -14,7 +14,7 @@ export default function LocaleSwitcher() {
   };
 
   return (
-    <select value={locale} onChange={handleChange}>
+    <select title="locale" value={locale} onChange={handleChange}>
       <option value="en">English</option>
       <option value="ru">Русский</option>
     </select>

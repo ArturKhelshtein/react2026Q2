@@ -1,13 +1,13 @@
-import { NavLink } from 'react-router-dom';
+import { Link } from '@/i18n/routing';
 import './Navigator.css';
 
 export default function Navigator() {
   return (
     <nav className="navigator">
-      <NavLink className="navigator__link" to="/" end>
+      <Link href="/" className="navigator__link">
         Home
-      </NavLink>
-      <NavLink className="navigator__link" to="/about">About</NavLink>
+      </Link>
+      <Link className="navigator__link" href="/about">About</Link>
     </nav>
   );
 }

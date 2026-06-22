@@ -1,23 +1,22 @@
-import { type ChangeEvent, type SubmitEvent } from 'react';
+'use client';
+
 import './AppHeader.css';
-import Search from './Search';
 import Navigator from './Navigator';
+import LocaleSwitcher from './LocaleSwitcher';
+import { useTheme } from '@/providers/ThemeProvider';
 
-interface AppHeaderProps {
-  value: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (event: SubmitEvent<HTMLFormElement>) => void;
-}
+export default function AppHeader() {
+  const { toggleTheme } = useTheme();
 
-export default function AppHeader({
-  value,
-  onChange,
-  onSubmit,
-}: AppHeaderProps) {
   return (
     <header className="app__header">
       <Navigator />
-      <Search value={value} onChange={onChange} onSubmit={onSubmit} />
+      <div className="app-header__controls">
+        <button onClick={toggleTheme} type="button" className="theme-toggle">
+          Toggle Theme
+        </button>
+        <LocaleSwitcher />
+      </div>
     </header>
   );
 }
