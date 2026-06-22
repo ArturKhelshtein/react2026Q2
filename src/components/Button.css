@@ -1,39 +1,28 @@
 .button {
-    height: 48px;
-    padding: 0
-        18px;
-    border: 0;
-    border-radius: var(
-        --radius-mid
-    );
-    background: #7c3aed;
-    color: #ffffff;
-    font: inherit;
-    font-weight: 600;
-    cursor: pointer;
-    transition:
-        transform
-            0.15s
-            ease,
-        background
-            0.2s
-            ease;
+  height: 48px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--radius-mid);
+  background: var(--primary);
+  color: var(--text-on-primary);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
 }
 
 .button:hover {
-    background: #6d28d9;
+  background: var(--primary-hover);
 }
 
 .button:active {
-    transform: translateY(
-        1px
-    );
+  transform: translateY(1px);
 }
 
 .button--secondary {
-    background: #4f627c;
+  background: var(--secondary);
 }
 
 .button--secondary:hover {
-    background: #354358;
+  background: var(--secondary-hover);
 }
