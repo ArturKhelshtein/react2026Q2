@@ -1,0 +1,13 @@
+{
+    "Navigation": {
+        "home": "Home",
+        "about": "About"
+    },
+    "HomePage": {
+        "title": "Hello Next.js"
+    },
+    "AboutPage": {
+        "title": "About",
+        "description": "Author: Artur Khelshtein"
+    }
+}

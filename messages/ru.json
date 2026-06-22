@@ -1,0 +1,13 @@
+{
+    "Navigation": {
+        "home": "Главная",
+        "about": "О приложении"
+    },
+    "HomePage": {
+        "title": "Привет, Next.js"
+    },
+    "AboutPage": {
+        "title": "О приложении!",
+        "description": "Автор: Артур Хельштейн"
+    }
+}
