@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import AppRouter from './router';
+import AppRouter from './legacy-router';
 
 const fetchMock = vi.fn<() => Promise<Response>>();
 vi.stubGlobal('fetch', fetchMock);

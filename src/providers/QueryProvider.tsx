@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const STALE_TIME = Number(import.meta.env.VITE_CACHE_STALE_TIME ?? '300000');
+const STALE_TIME = Number('300000');
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -9,7 +9,7 @@ import reactDom from 'eslint-plugin-react-dom'
 import eslintConfigPrettier from "eslint-config-prettier/flat";
 
 export default defineConfig([
-    globalIgnores(['dist']),
+    globalIgnores(['dist', '.next']),
     {
         files: ['**/*.{ts,tsx}'],
         extends: [
@@ -28,7 +28,7 @@ export default defineConfig([
         languageOptions: {
             globals: globals.browser,
             parserOptions: {
-                project: ['./tsconfig.node.json', './tsconfig.app.json'],
+                project: ['./tsconfig.json'],
                 tsconfigRootDir: import.meta.dirname,
             },
         },

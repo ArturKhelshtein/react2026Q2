@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
-import AppRouter from './router.tsx';
+import AppRouter from './legacy-router.tsx';
 import QueryProvider from './providers/QueryProvider.tsx';
 
 const rootElement = document.getElementById('root');
