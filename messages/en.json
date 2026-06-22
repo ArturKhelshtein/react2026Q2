@@ -9,5 +9,8 @@
     "AboutPage": {
         "title": "About",
         "description": "Author: Artur Khelshtein"
+    },
+    "NotFound": {
+        "message": "Page not found."
     }
 }
