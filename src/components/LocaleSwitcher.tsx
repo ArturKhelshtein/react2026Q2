@@ -2,6 +2,7 @@
 
 import { useLocale } from 'next-intl';
 import { useRouter, usePathname } from '@/i18n/routing';
+import './LocaleSwitcher.css';
 
 export default function LocaleSwitcher() {
   const locale = useLocale();
@@ -14,7 +15,7 @@ export default function LocaleSwitcher() {
   };
 
   return (
-    <select title="locale" value={locale} onChange={handleChange}>
+    <select title="locale" className="locale-switcher" value={locale} onChange={handleChange}>
       <option value="en">English</option>
       <option value="ru">Русский</option>
     </select>

@@ -12,3 +12,9 @@
     );
     background: #ffffff;
 }
+
+.app-header__controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
