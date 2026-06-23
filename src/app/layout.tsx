@@ -15,9 +15,9 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body>
-        <div id="root">
-          <ThemeProvider>{children}</ThemeProvider>
-        </div>
+        <ThemeProvider>
+          <div id="root">{children}</div>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -46,7 +46,7 @@
 
 .item--selected {
   border-color: var(--primary);
-  background: #e7e7ee;
+  background: var(--surface-hover);
   box-shadow: 0 0 0 var(--stroke-mid) var(--primary-focus-ring);
 }
 

@@ -38,7 +38,6 @@ export default async function HomePage({
 
   return (
     <div className="app">
-      <h1>{t('title')}</h1>
       <Search />
       <AppMain items={items} loading={false} error={error} />
       {!query && totalPages > 1 && (
