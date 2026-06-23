@@ -1,0 +1,24 @@
+{
+    "Navigation": {
+        "home": "Home",
+        "about": "About"
+    },
+    "HomePage": {
+        "title": "Hello Next.js"
+    },
+    "AboutPage": {
+        "title": "About",
+        "author": "Author: Artur Khelshtein",
+        "course": "Course:",
+        "courseLink": "RS School React course",
+        "backToHome": "Back to Home"
+    },
+    "NotFound": {
+        "message": "Page not found.",
+        "backToHome": "Back to Home"
+    },
+    "Search": {
+        "placeholder": "Search pokemon by name",
+        "searchButton": "Search"
+    }
+}

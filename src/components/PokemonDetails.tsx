@@ -1,6 +1,7 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import './PokemonDetails.css';
 import { usePokemonDetails } from '../hooks/usePokemonQueries';
+import Image from 'next/image';
 
 export default function PokemonDetails() {
   const { detailsId } = useParams();
@@ -26,7 +27,7 @@ export default function PokemonDetails() {
       {!isLoading && !error && data && (
         <>
           {data.spriteUrl && (
-            <img
+            <Image
               src={data.spriteUrl}
               alt={data.name}
               className="details-sprite"

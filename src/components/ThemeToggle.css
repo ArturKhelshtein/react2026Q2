@@ -1,0 +1,10 @@
+.theme-toggle {
+  padding: 6px 12px;
+  border: var(--stroke-min) none;
+  border-radius: var(--radius-min);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+}

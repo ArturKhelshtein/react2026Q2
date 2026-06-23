@@ -1,14 +1,13 @@
 .app__header {
-    padding: var(
-        --spaicing-mid
-    );
-    border: var(
-            --stroke-min
-        )
-        solid
-        #dbe3f0;
-    border-radius: var(
-        --radius-max
-    );
-    background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-mid);
+  border: var(--stroke-min) solid var(--header-border);
+  background: var(--surface);
+}
+
+.app-header__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-mid);
 }

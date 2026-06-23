@@ -5,7 +5,7 @@ import {
   fetchPokemonDetails,
 } from '../api/pokemonApi';
 
-const STALE_TIME = Number(import.meta.env.VITE_CACHE_STALE_TIME ?? '300000');
+const STALE_TIME = Number('300000');
 
 export const pokemonKeys = {
   all: ['pokemons'] as const,

@@ -1,3 +1,5 @@
+'use client';
+
 import './Results.css';
 import Item from './Item';
 import { useSelectedStore } from '../store/selectedStore';

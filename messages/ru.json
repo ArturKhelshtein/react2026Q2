@@ -1,0 +1,24 @@
+{
+    "Navigation": {
+        "home": "Главная",
+        "about": "О приложении"
+    },
+    "HomePage": {
+        "title": "Привет, Next.js"
+    },
+    "AboutPage": {
+        "title": "О приложении",
+        "author": "Автор: Артур Хельштейн",
+        "course": "Курс:",
+        "courseLink": "RS School React course",
+        "backToHome": "На главную"
+    },
+    "NotFound": {
+        "message": "Страница не найдена.",
+        "backToHome": "На главную"
+    },
+    "Search": {
+        "placeholder": "Искать покемона по имени",
+        "searchButton": "Поиск"
+    }
+}
