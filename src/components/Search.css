@@ -1,4 +1,5 @@
 .search {
+  padding: var(--spacing-mid);
   display: flex;
   gap: var(--spacing-min);
   align-items: center;

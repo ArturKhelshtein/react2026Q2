@@ -1,26 +1,26 @@
-import { type ChangeEvent, type SubmitEvent } from 'react';
+'use client';
+
+import { useState } from 'react';
+import { useActionState } from 'react';
+import { searchAction } from '@/lib/actions';
 import './Search.css';
 import Button from './Button';
 
-interface SearchProps {
-  value: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (event: SubmitEvent<HTMLFormElement>) => void;
-}
+export default function Search() {
+  const [, formAction] = useActionState(searchAction, null);
+  const [value, setValue] = useState('');
 
-function Search({ value, onChange, onSubmit }: SearchProps) {
   return (
-    <form className="search" onSubmit={onSubmit}>
+    <form action={formAction} className="search">
       <input
         className="search__input"
         type="text"
+        name="query"
         value={value}
-        onChange={onChange}
+        onChange={(event) => { setValue(event.target.value); }}
         placeholder="Search pokemon by name"
       />
       <Button label="Search" type="submit" />
     </form>
   );
 }
-
-export default Search;
