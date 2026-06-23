@@ -16,5 +16,9 @@
     "NotFound": {
         "message": "Страница не найдена.",
         "backToHome": "На главную"
+    },
+    "Search": {
+        "placeholder": "Искать покемона по имени",
+        "searchButton": "Поиск"
     }
 }

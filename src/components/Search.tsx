@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useActionState } from 'react';
+import { useTranslations } from 'next-intl';
 import { searchAction } from '@/lib/actions';
 import './Search.css';
 import Button from './Button';
@@ -9,6 +10,7 @@ import Button from './Button';
 export default function Search() {
   const [, formAction] = useActionState(searchAction, null);
   const [value, setValue] = useState('');
+  const t = useTranslations('Search');
 
   return (
     <form action={formAction} className="search">
@@ -17,10 +19,10 @@ export default function Search() {
         type="text"
         name="query"
         value={value}
-        onChange={(event) => { setValue(event.target.value); }}
-        placeholder="Search pokemon by name"
+        onChange={(event) => setValue(event.target.value)}
+        placeholder={t('placeholder')}
       />
-      <Button label="Search" type="submit" />
+      <Button label={t('searchButton')} type="submit" />
     </form>
   );
 }

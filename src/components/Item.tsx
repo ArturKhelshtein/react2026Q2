@@ -1,3 +1,5 @@
+'use client';
+
 import { type KeyboardEvent } from 'react';
 import './Item.css';
 import type { ItemProps } from '../types';

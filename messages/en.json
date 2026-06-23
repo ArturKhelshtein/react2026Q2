@@ -16,5 +16,9 @@
     "NotFound": {
         "message": "Page not found.",
         "backToHome": "Back to Home"
+    },
+    "Search": {
+        "placeholder": "Search pokemon by name",
+        "searchButton": "Search"
     }
 }
