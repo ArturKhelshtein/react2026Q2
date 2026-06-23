@@ -1,18 +1,13 @@
+'use client';
+
 import './SelectedItemsFlyout.css';
 import {
   useSelectedStore,
   selectSelectedItems,
   selectSelectedCount,
 } from '../store/selectedStore';
-import type { AppItem } from '../types';
 
-interface SelectedItemsFlyoutProps {
-  onDownload: (items: AppItem[]) => void;
-}
-
-export default function SelectedItemsFlyout({
-  onDownload,
-}: SelectedItemsFlyoutProps) {
+export default function SelectedItemsFlyout() {
   const selectedItems = useSelectedStore(selectSelectedItems);
   const count = useSelectedStore(selectSelectedCount);
   const unselectAll = useSelectedStore((state) => state.unselectAll);
@@ -27,18 +22,24 @@ export default function SelectedItemsFlyout({
         </span>
 
         <div className="flyout__actions">
-          <button className="button button--secondary" onClick={unselectAll}>
+          <button
+            type="button"
+            className="button button--secondary"
+            onClick={unselectAll}
+          >
             Unselect all
           </button>
 
-          <button
-            className="button"
-            onClick={() => {
-              onDownload(selectedItems);
-            }}
-          >
-            Download
-          </button>
+          <form action="/api/csv" method="POST" style={{ display: 'inline' }}>
+            <input
+              type="hidden"
+              name="items"
+              value={JSON.stringify(selectedItems)}
+            />
+            <button type="submit" className="button">
+              Download
+            </button>
+          </form>
         </div>
       </div>
     </div>

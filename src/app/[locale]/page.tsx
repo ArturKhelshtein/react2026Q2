@@ -3,6 +3,7 @@ import { fetchPokemonList, fetchPokemonByName } from '@/api/pokemonApi';
 import { Link } from '@/i18n/routing';
 import AppMain from '@/components/AppMain';
 import Search from '@/components/Search';
+import SelectedItemsFlyout from '@/components/SelectedItemsFlyout';
 
 const PAGE_SIZE = 20;
 
@@ -37,6 +38,7 @@ export default async function HomePage({
 
   return (
     <div className="app">
+      <h1>{t('title')}</h1>
       <Search />
       <AppMain items={items} loading={false} error={error} />
       {!query && totalPages > 1 && (
@@ -47,7 +49,9 @@ export default async function HomePage({
               <Link
                 key={p}
                 href={{ query: { page: String(p) } }}
-                className={p === page ? 'pagination__link--active' : 'pagination__link'}
+                className={
+                  p === page ? 'pagination__link--active' : 'pagination__link'
+                }
               >
                 {p}
               </Link>
@@ -55,6 +59,7 @@ export default async function HomePage({
           })}
         </nav>
       )}
+      <SelectedItemsFlyout />
     </div>
   );
 }

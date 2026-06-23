@@ -52,5 +52,5 @@
 
 .item__content:hover {
   cursor: pointer;
-  background: #f1f5f9;
+  background: var(--surface-hover);
 }

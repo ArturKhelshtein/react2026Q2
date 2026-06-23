@@ -9,6 +9,7 @@
   --bg: #ffffff;
   --surface: #ffffff;
   --surface-alt: #f8f8f8;
+  --surface-hover: #f1f5f9;
   --border: #e5e4e7;
   --code-bg: #f4f3ec;
   --header-border: #dbe3f0;
@@ -68,6 +69,7 @@ html[data-theme="dark"] body {
   --bg: #16171d;
   --surface: #1f2028;
   --surface-alt: #252631;
+  --surface-hover: #1f2230;
   --border: #2e303a;
   --code-bg: #1f2028;
   --header-border: #2e303a;

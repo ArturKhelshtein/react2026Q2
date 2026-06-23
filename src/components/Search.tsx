@@ -19,7 +19,7 @@ export default function Search() {
         type="text"
         name="query"
         value={value}
-        onChange={(event) => setValue(event.target.value)}
+        onChange={(event) => { setValue(event.target.value); }}
         placeholder={t('placeholder')}
       />
       <Button label={t('searchButton')} type="submit" />
